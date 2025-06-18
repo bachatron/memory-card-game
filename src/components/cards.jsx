@@ -1,13 +1,28 @@
 const cardURL = "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/";
 
-function getRandomPokemon () {
-    const randomNumber = Math.floor(Math.random() * 1118) + 1
-    return `${cardURL+randomNumber}.png`
+function createNumberOfCards(number) {
+    if (number > 1025) {
+        console.warn("Requested number of unique cards exceeds total available Pokémon. Returning all 1025 unique artworks.");
+        number = 1025;
+    }
+
+    let uniquePokemonIds = new Set();
+    let cardsWithData = [];
+
+    while (uniquePokemonIds.size < number) {
+        const randomNumber = Math.floor(Math.random() * 1025) + 1;
+
+        if (!uniquePokemonIds.has(randomNumber)) {
+            uniquePokemonIds.add(randomNumber);
+
+            cardsWithData.push({
+                id: randomNumber,
+                url: `${cardURL}${randomNumber}.png`
+            });
+        }
+    }
+
+    return cardsWithData;
 }
 
-function createNumberOfCards (number) {
-    let cardList = [];
-    
-};
-
-export default getRandomPokemon;
+export default createNumberOfCards;
